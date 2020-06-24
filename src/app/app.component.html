@@ -1,0 +1,8 @@
+<div class="container-1">
+	<form [formGroup]="form" (ngSubmit)="submit()">
+		<app-range-input [min]="rangeInputConfig.min" [max]="rangeInputConfig.max" [ticks]="rangeInputConfig.ticks">
+		</app-range-input>
+
+		<button type="submit" class="big-button">Submit</button>
+	</form>
+</div>
