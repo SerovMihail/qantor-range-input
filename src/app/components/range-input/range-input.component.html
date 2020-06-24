@@ -1,12 +1,12 @@
-<div class="input-wrapper">
-	<button type="button" class="fast-select-button min-button">MIN {{min}}</button>
+<div class="input-wrapper" [formGroup]="formGroup" *ngIf="formGroup && control">
+	<button type="button" class="fast-select-button min-button" (click)="setControlValue(min)">MIN {{min}}</button>
 
 	<div class="center-section">
-		<input type="number" min="{{min}}" max="{{max}}" class="range-input">
+		<input [formControl]="control" type="number" min="{{min}}" max="{{max}}" class="range-input">
 			<ul class="ticks-wrapper">
 				<li class="tick" [style.width.%]="getTickWidthByTick(tick)" *ngFor="let tick of ticks">{{tick}}K</li>
 			</ul>
 	</div>
-	<button class="fast-select-button max-button" type="button" >MAX {{max}}</button>
+	<button class="fast-select-button max-button" type="button"  (click)="setControlValue(max)">MAX {{max}}</button>
 
 </div>
