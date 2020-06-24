@@ -1,12 +1,19 @@
 <div class="input-wrapper" [formGroup]="formGroup" *ngIf="formGroup && control">
-	<button type="button" class="fast-select-button min-button" (click)="setControlValue(min)">MIN {{min}}</button>
+	<button type="button" class="fast-select-button min-button" (click)="setControlValue(min)">MIN {{min | shortNumber}}</button>
 
 	<div class="center-section">
 		<input [formControl]="control" type="number" min="{{min}}" max="{{max}}" class="range-input">
-			<ul class="ticks-wrapper">
-				<li class="tick" [style.width.%]="getTickWidthByTick(tick)" *ngFor="let tick of ticks">{{tick}}K</li>
+		<div class="ticks-wrapper">
+			<ul class="ticks-list">
+				<li class="tick-wrapper" *ngFor="let tick of ticks;" [style.left.%]="getPercentageOffsetFromLeftByValue(tick)">
+					<span class="tick" (click)="setControlValue(tick)"
+				>{{tick}}</span>
+				</li>
 			</ul>
+			<div class="handler" [style.margin-left.%]="handlerLeftPercentageMargin"></div>
+		</div>
+
 	</div>
-	<button class="fast-select-button max-button" type="button"  (click)="setControlValue(max)">MAX {{max}}</button>
+	<button class="fast-select-button max-button" type="button"  (click)="setControlValue(max)">MAX {{max | shortNumber}}</button>
 
 </div>

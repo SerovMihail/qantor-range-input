@@ -9,11 +9,11 @@ import { FormGroup, Validators, FormControl } from "@angular/forms";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  
+
   rangeInputConfig: IRangeInputConfig = {
-    min: 5,
-    max: 150,
-    ticks: [10, 20, 30]
+    min: 50,
+    max: 100,
+    ticks: [0, 50, 75, 100]
   };
 
   form = new FormGroup({

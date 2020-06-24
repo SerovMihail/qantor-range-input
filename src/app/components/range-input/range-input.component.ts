@@ -4,7 +4,10 @@ import {
   Input,
   forwardRef,
   ChangeDetectionStrategy,
-   Optional, Host, SkipSelf
+  Optional,
+  Host,
+  SkipSelf,
+  OnDestroy
 } from "@angular/core";
 import {
   ControlContainer,
@@ -14,6 +17,8 @@ import {
   FormGroup,
   FormControl
 } from "@angular/forms";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-range-input",
@@ -25,13 +30,14 @@ import {
       useExisting: forwardRef(() => RangeInputComponent),
       multi: true
     }
-  ]
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RangeInputComponent implements OnInit, ControlValueAccessor {
+export class RangeInputComponent
+  implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() min: number;
   @Input() max: number;
-  @Input() ticks: number[] = [];
+  @Input() ticks: number[];
 
   @Input() formControlName: string;
 
@@ -44,22 +50,29 @@ export class RangeInputComponent implements OnInit, ControlValueAccessor {
     return this._value;
   }
 
-    formGroup: FormGroup;
+  formGroup: FormGroup;
 
   protected _value: any;
   disabled: boolean;
   control: FormControl;
 
+  private readonly ngUnsubscribe$ = new Subject<void>();
   onChange = (_: any) => {};
   onTouch = (_: any) => {};
 
-  constructor(@Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+  handlerLeftPercentageMargin: number;
+
+  constructor(
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer
+  ) {}
 
   ngOnInit() {
     if (this.controlContainer) {
       if (this.formControlName) {
         this.formGroup = this.controlContainer.control as FormGroup;
-        this.control = this.controlContainer.control.get(this.formControlName) as FormControl;
+        this.control = this.controlContainer.control.get(
+          this.formControlName
+        ) as FormControl;
       } else {
         console.warn(
           "Missing FormControlName directive from host element of the component"
@@ -68,18 +81,25 @@ export class RangeInputComponent implements OnInit, ControlValueAccessor {
     } else {
       console.warn("Can't find parent FormGroup directive");
     }
+
+    this.formGroup.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.handlerLeftPercentageMargin = this.getPercentageOffsetFromLeftByValue(this.control.value);
+      });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   onChangeEvent($event: Event) {
-    console.log("change event");
-    debugger;
     this.writeValue(($event.target as HTMLInputElement).value);
   }
 
   writeValue(value: any): void {
-    debugger;
     if (value !== undefined) {
-      
       this._value = value;
       this.onChange(this.value);
     }
@@ -90,20 +110,30 @@ export class RangeInputComponent implements OnInit, ControlValueAccessor {
   }
 
   registerOnTouched(fn: any): void {
-    debugger;
     this.onTouch = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
-    debugger;
     this.disabled = isDisabled;
   }
-  getTickWidthByTick(tick: number) {
-    return;
+
+  getPercentageOffsetFromLeftByValue(tick: number) {
+    if (tick <= this.min) {
+      return 0;
+    }
+
+    if(tick >= this.max) {
+      return 100;
+    }
+
+    const rangeBetweenMaxAndMin = this.max - this.min;
+    const valueOnOnePercent = rangeBetweenMaxAndMin / 100;
+    const moreThanMinOn = tick - this.min;
+
+    return (moreThanMinOn / rangeBetweenMaxAndMin) * 100;
   }
 
   setControlValue(value: number) {
-    debugger;
     this.control.setValue(value);
   }
 }
