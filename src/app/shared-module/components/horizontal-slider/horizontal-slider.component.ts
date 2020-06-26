@@ -71,9 +71,7 @@ export class HorizontalSliderComponent {
 			nextValue = Math.max( nextValue, this.min );
 			nextValue = Math.min( nextValue, this.max );
 
-      debugger;
-
-			this.valueChangeEvents.emit( Math.random() );
+			this.valueChangeEvents.emit(nextValue );
 
 		};
 

@@ -12,8 +12,8 @@ export class AppComponent {
 
   rangeInputConfig: IRangeInputConfig = {
     min: 0,
-    max: 1,
-    ticks: [0, 1]
+    max: 100,
+    ticks: [0, 100]
   };
 
   form = new FormGroup({

@@ -44,13 +44,10 @@ export class RangeInputComponent
 
   @Input()
   set value(val) {
-    debugger;
-
     this._value = val;
     this.onChange(val);
   }
   get value() {
-    debugger;
     return this._value;
   }  
 
@@ -107,8 +104,6 @@ export class RangeInputComponent
   writeValue(value: any): void {
     if (value !== undefined) {
       this._value = value;
-      debugger;
-      
       this.onChange(value);
     }
   }
@@ -154,11 +149,10 @@ export class RangeInputComponent
   }
 
   handleSliderValue(val) {
-    console.log(val);
+    this.setControlValue(val);
   }
 
   setControlValue(value: number) {
-    debugger;
     this.control.setValue(value);
   }
 }
