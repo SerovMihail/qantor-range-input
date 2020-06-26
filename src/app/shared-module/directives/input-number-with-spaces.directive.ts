@@ -4,7 +4,7 @@ import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: "[formControlName][withSpaces]"
+  selector: "[formControlName][appNumberWithSpaces]"
 })
 export class InputNumberWithSpaces implements OnInit, OnDestroy {
   private readonly ngUnsubscribe$ = new Subject<void>();
@@ -12,6 +12,7 @@ export class InputNumberWithSpaces implements OnInit, OnDestroy {
   constructor(public ngControl: NgControl) {}
 
    ngOnInit(): void {
+     debugger;
     this.ngControl.control.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
       value => {
         const newVal = this.transform(value);
@@ -21,6 +22,7 @@ export class InputNumberWithSpaces implements OnInit, OnDestroy {
   }
 
   transform(x) {
+    debugger;
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     return parts.join(".");
