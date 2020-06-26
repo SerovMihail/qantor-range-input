@@ -18,16 +18,6 @@ import { Component, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular
 	queries: {
 		"trackRef": new ViewChild( "trackRef" )
 	},
-	template:
-	`
-		<div #trackRef class="track">
-			<div class="value" [style.left.%]="( value / max * 100 )">
-				<div (mousedown)="startDrag( event )" class="thumb">
-					<br />
-				</div>
-			</div>
-		</div>
-	`
 })
 export class HorizontalSliderComponent {
 
