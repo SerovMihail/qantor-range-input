@@ -57,11 +57,12 @@ export class HorizontalSliderComponent {
       const valueOnOnePercent = rangeBetweenMaxAndMin / 100;
       const moreThanMinOn = nextValue - this.min;
 
-      
+      const roundedLeftOffsetInPercentage = Math.round((moreThanMinOn / rangeBetweenMaxAndMin) * 100);
+      const roundedControlValue = Math.round(nextValue);
 
       this.valueChangeEvents.emit({
-        leftOffset: Math.round((moreThanMinOn / rangeBetweenMaxAndMin) * 100),
-        value: Math.round(nextValue)
+        leftOffset: roundedLeftOffsetInPercentage,
+        value: roundedControlValue
       });
     };
 

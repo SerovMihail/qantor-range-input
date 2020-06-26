@@ -25,6 +25,13 @@
         border-radius: 50%;
         top: -12px;
         left: -12px;
+        cursor: pointer;
+        transition: all .5s;
+
+        &:hover,
+        &:focus {
+          background: rgb(219, 219, 219);
+        }
       }
     }
   }

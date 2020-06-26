@@ -7,7 +7,7 @@
 			<ul class="ticks-list">
 				<li class="tick-wrapper" *ngFor="let tick of ticks;"
 					[style.left.%]="getPercentageOffsetFromLeftByValue(tick)">
-					<span class="tick" (click)="setControlValue(tick)"
+					<span class="tick" tabindex="0" (keyup.enter)="setControlValue(tick)" (click)="setControlValue(tick)"
 				>{{tick | shortNumber}}</span>
 				</li>
 			</ul>
