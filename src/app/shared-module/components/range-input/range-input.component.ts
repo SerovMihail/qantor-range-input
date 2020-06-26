@@ -35,6 +35,7 @@ import { Subject } from "rxjs";
 })
 export class RangeInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor {
+
   @Input() min: number;
   @Input() max: number;
   @Input() ticks: number[];
@@ -48,19 +49,20 @@ export class RangeInputComponent
   }
   get value() {
     return this._value;
-  }
+  }  
+
+  private readonly ngUnsubscribe$ = new Subject<void>();
 
   formGroup: FormGroup;
 
   protected _value: any;
   disabled: boolean;
-  control: FormControl;
-
-  private readonly ngUnsubscribe$ = new Subject<void>();
-  onChange = (_: any) => {};
-  onTouch = (_: any) => {};
+  control: FormControl;  
 
   handlerLeftPercentageMargin: number;
+
+  onChange = (_: any) => {};
+  onTouch = (_: any) => {};
 
   constructor(
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer
@@ -95,6 +97,7 @@ export class RangeInputComponent
   }
 
   onChangeEvent($event: Event) {
+    debugger;
     this.writeValue(($event.target as HTMLInputElement).value);
   }
 
