@@ -44,10 +44,13 @@ export class RangeInputComponent
 
   @Input()
   set value(val) {
+    debugger;
+
     this._value = val;
-    // this.onChange(val);
+    this.onChange(val);
   }
   get value() {
+    debugger;
     return this._value;
   }  
 
@@ -61,8 +64,8 @@ export class RangeInputComponent
 
   handlerLeftPercentageMargin: number;
 
-  onChange = (_: any) => {};
-  onTouch = (_: any) => {};
+  onChange = (_: any) => {debugger};
+  onTouch = (_: any) => {debugger};
 
   constructor(
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer
@@ -105,8 +108,8 @@ export class RangeInputComponent
     if (value !== undefined) {
       this._value = value;
       debugger;
-      const valueWithSpaces = this.transform(this.value);
-      this.onChange(valueWithSpaces);
+      
+      this.onChange(value);
     }
   }
 
@@ -142,8 +145,10 @@ export class RangeInputComponent
     if (!valueBeforeTransform.toString()) {
       return "";
     }
+
+    const valueAsStringValue = valueBeforeTransform.toString();
   
-    const valueWithoutSpaces = valueBeforeTransform.replace(" ", "")
+    const valueWithoutSpaces = valueAsStringValue.replace(" ", "")
 
     return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
   }

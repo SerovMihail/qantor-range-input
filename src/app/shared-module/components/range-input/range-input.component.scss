@@ -68,7 +68,6 @@
         line-height: 12px;
         text-align: center;
         color: #AEB3BA;
-        padding-top: 4px;
         position: relative;
 
         .ticks-list {
@@ -77,8 +76,7 @@
 
           .tick-wrapper {
             position: absolute;
-
-
+            top: 4px;
 
             .tick {
               position: relative;
