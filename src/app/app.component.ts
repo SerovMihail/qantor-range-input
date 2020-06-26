@@ -1,7 +1,7 @@
 import { Component, VERSION } from "@angular/core";
-import { IRangeInputConfig } from "./components/range-input/IRangeInputConfig";
 
 import { FormGroup, Validators, FormControl } from "@angular/forms";
+import { IRangeInputConfig } from "./shared-module/models/interfaces/IRangeInputConfig";
 
 @Component({
   selector: "my-app",
