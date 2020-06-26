@@ -10,7 +10,11 @@
 				>{{tick | shortNumber}}</span>
 				</li>
 			</ul>
-			<div class="handler" [style.margin-left.%]="handlerLeftPercentageMargin"></div>
+			<!-- <div class="handler" [style.margin-left.%]="handlerLeftPercentageMargin"></div> -->
+      <app-horizontal-slider [value]="control.value"
+				(valueChange)="handleSliderValue( $event )"
+				[min]="min"
+				[max]="max"></app-horizontal-slider>
 		</div>
 
 	</div>

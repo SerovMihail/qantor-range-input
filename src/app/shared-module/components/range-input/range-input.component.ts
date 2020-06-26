@@ -153,6 +153,10 @@ export class RangeInputComponent
     return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
   }
 
+  handleSliderValue(val) {
+    console.log(val);
+  }
+
   setControlValue(value: number) {
     debugger;
     this.control.setValue(value);

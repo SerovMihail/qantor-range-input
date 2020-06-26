@@ -11,9 +11,9 @@ import { IRangeInputConfig } from "./shared-module/models/interfaces/IRangeInput
 export class AppComponent {
 
   rangeInputConfig: IRangeInputConfig = {
-    min: 50,
-    max: 100,
-    ticks: [50, 75, 100]
+    min: 0,
+    max: 1,
+    ticks: [0, 1]
   };
 
   form = new FormGroup({
