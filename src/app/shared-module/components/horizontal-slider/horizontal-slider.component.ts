@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { ISliderDragFinish } from '../../models/emitters/ISliderDragFinish';
 
 @Component({
   selector: 'app-horizontal-slider',
@@ -25,21 +26,10 @@ export class HorizontalSliderComponent {
 	public min!: number;
 	public trackRef!: ElementRef;
 	public value!: number;
-	public valueChangeEvents: EventEmitter<number>;
+	public valueChangeEvents = new EventEmitter<ISliderDragFinish>();
 
-	// I initialize the slider component.
-	constructor() {
+	constructor() {}
 
-		this.valueChangeEvents = new EventEmitter();
-
-	}
-
-	// ---
-	// PUBLIC METHODS.
-	// ---
-
-	// I start tracking the mouse movements on the slider in order to calculate the
-	// desired change in value.
 	public startDrag( event: MouseEvent ) : void {
 
 		event.preventDefault();
@@ -67,11 +57,19 @@ export class HorizontalSliderComponent {
 			);
 			// NOTE: For the purposes of this demo, I am assuming that all values are
 			// integers. Allowing for floats would make this more challenging.
-			var nextValue = Math.round( ( this.max - this.min ) * percentClientX );
+			var nextValue = Math.round( ( this.max - this.min + 1) * percentClientX + this.min);
 			nextValue = Math.max( nextValue, this.min );
 			nextValue = Math.min( nextValue, this.max );
 
-			this.valueChangeEvents.emit(nextValue );
+      const rangeBetweenMaxAndMin = this.max - this.min;
+    const valueOnOnePercent = rangeBetweenMaxAndMin / 100;
+    const moreThanMinOn = nextValue - this.min;
+
+
+			this.valueChangeEvents.emit({
+        leftOffset: (moreThanMinOn / rangeBetweenMaxAndMin) * 100,
+        value: nextValue
+      });
 
 		};
 

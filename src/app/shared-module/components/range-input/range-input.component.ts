@@ -19,6 +19,7 @@ import {
 } from "@angular/forms";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
+import { ISliderDragFinish } from "../../models/emitters/ISliderDragFinish";
 
 @Component({
   selector: "app-range-input",
@@ -148,8 +149,9 @@ export class RangeInputComponent
     return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
   }
 
-  handleSliderValue(val) {
-    this.setControlValue(val);
+  handleSliderValue(finishDrag: ISliderDragFinish) {
+    this.setControlValue(finishDrag.value);
+    this.handlerLeftPercentageMargin = finishDrag.leftOffset;
   }
 
   setControlValue(value: number) {
