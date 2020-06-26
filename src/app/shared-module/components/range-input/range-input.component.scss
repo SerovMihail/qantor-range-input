@@ -1,8 +1,8 @@
 :host {
   font-size: 16px;
   line-height: 19px;
-      margin: 48px 24px;
-      display: block;
+  margin: 48px 24px;
+  display: block;
 
   .input-wrapper {
     display: flex;
@@ -13,13 +13,10 @@
       flex-direction: row;
       padding: 15px 20px;
       background: #F4F5F6;
-
       height: inherit;
-
       border: 1px solid #5AA6FF;
       box-sizing: border-box;
       border-radius: 0px 3px 3px 0px;
-
       color: #5AA6FF;
       white-space: nowrap;
     }
@@ -54,7 +51,6 @@
           margin: 0;
         }
 
-        /* Firefox */
         &[type=number] {
           -moz-appearance: textfield;
         }
@@ -96,7 +92,6 @@
                 background-color: #AEB3BA;
                 top: 1px;
               }
-
             }
           }
         }
@@ -114,13 +109,7 @@
 
           transition: all .5s;
         }
-
-
-
-
       }
     }
   }
-
-
 }

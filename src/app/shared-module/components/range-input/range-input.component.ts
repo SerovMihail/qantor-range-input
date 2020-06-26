@@ -36,7 +36,6 @@ import { ISliderDragFinish } from "../../models/emitters/ISliderDragFinish";
 })
 export class RangeInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor {
-
   @Input() min: number;
   @Input() max: number;
   @Input() ticks: number[];
@@ -50,26 +49,36 @@ export class RangeInputComponent
   }
   get value() {
     return this._value;
-  }  
+  }
+  private _value: any;
 
   private readonly ngUnsubscribe$ = new Subject<void>();
 
   formGroup: FormGroup;
+  control: FormControl;
 
-  protected _value: any;
   disabled: boolean;
-  control: FormControl;  
 
-  handlerLeftPercentageMargin: number;
+  handlerLeftOffset: number;
 
-  onChange = (_: any) => {debugger};
-  onTouch = (_: any) => {debugger};
+  onChange = (_: any) => {};
+  onTouch = (_: any) => {};
 
   constructor(
     @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer
   ) {}
 
   ngOnInit() {
+    this.getFormGroupAndFormControl();
+    this.observeFormGroupValueChanges();
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  private getFormGroupAndFormControl() {
     if (this.controlContainer) {
       if (this.formControlName) {
         this.formGroup = this.controlContainer.control as FormGroup;
@@ -84,17 +93,16 @@ export class RangeInputComponent
     } else {
       console.warn("Can't find parent FormGroup directive");
     }
+  }
 
+  private observeFormGroupValueChanges() {
     this.formGroup.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        this.handlerLeftPercentageMargin = this.getPercentageOffsetFromLeftByValue(this.control.value);
+        this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
+          this.control.value
+        );
       });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   onChangeEvent($event: Event) {
@@ -126,7 +134,7 @@ export class RangeInputComponent
       return 0;
     }
 
-    if(tick >= this.max) {
+    if (tick >= this.max) {
       return 100;
     }
 
@@ -137,21 +145,21 @@ export class RangeInputComponent
     return (moreThanMinOn / rangeBetweenMaxAndMin) * 100;
   }
 
-   transform(valueBeforeTransform: string) {
+  transform(valueBeforeTransform: string) {
     if (!valueBeforeTransform.toString()) {
       return "";
     }
 
     const valueAsStringValue = valueBeforeTransform.toString();
-  
-    const valueWithoutSpaces = valueAsStringValue.replace(" ", "")
+
+    const valueWithoutSpaces = valueAsStringValue.replace(" ", "");
 
     return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
   }
 
-  handleSliderValue(finishDrag: ISliderDragFinish) {
+  onSliderDragEmit(finishDrag: ISliderDragFinish) {
     this.setControlValue(finishDrag.value);
-    this.handlerLeftPercentageMargin = finishDrag.leftOffset;
+    this.handlerLeftOffset = finishDrag.leftOffset;
   }
 
   setControlValue(value: number) {

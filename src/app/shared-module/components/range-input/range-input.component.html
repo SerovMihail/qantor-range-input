@@ -2,17 +2,16 @@
 	<button type="button" class="fast-select-button min-button" (click)="setControlValue(min)">MIN {{min | shortNumber}}</button>
 
 	<div class="center-section">
-		<input  [formControl]="control" type="text" min="{{min}}" max="{{max}}" class="range-input">
+		<input  [formControl]="control" type="number" min="{{min}}" max="{{max}}" class="range-input">
 		<div class="ticks-wrapper">
 			<ul class="ticks-list">
-				<li class="tick-wrapper" *ngFor="let tick of ticks;" [style.left.%]="getPercentageOffsetFromLeftByValue(tick)">
+				<li class="tick-wrapper" *ngFor="let tick of ticks;"
+					[style.left.%]="getPercentageOffsetFromLeftByValue(tick)">
 					<span class="tick" (click)="setControlValue(tick)"
 				>{{tick | shortNumber}}</span>
 				</li>
 			</ul>
-      <app-horizontal-slider [value]="handlerLeftPercentageMargin"
-				(valueChange)="handleSliderValue($event)"
-				[min]="min"
+			<app-horizontal-slider [leftOffset]="handlerLeftOffset" (valueChange)="onSliderDragEmit($event)" [min]="min"
 				[max]="max"></app-horizontal-slider>
 		</div>
 
