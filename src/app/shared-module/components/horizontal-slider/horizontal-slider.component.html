@@ -1,7 +1,7 @@
 <div #trackRef class="track">
-			<div class="value" [style.left.%]="( value / max * 100 )">
-				<div (mousedown)="startDrag( $event )" class="thumb">
-					<br />
+	<div class="value" [style.left.%]="value">
+		<div (mousedown)="startDrag( $event )" class="thumb">
+			<br />
 				</div>
-			</div>
 		</div>
+	</div>
