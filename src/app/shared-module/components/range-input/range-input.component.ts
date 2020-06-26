@@ -45,7 +45,7 @@ export class RangeInputComponent
   @Input()
   set value(val) {
     this._value = val;
-    this.onChange(val);
+    // this.onChange(val);
   }
   get value() {
     return this._value;
@@ -104,7 +104,9 @@ export class RangeInputComponent
   writeValue(value: any): void {
     if (value !== undefined) {
       this._value = value;
-      this.onChange(this.value);
+      debugger;
+      const valueWithSpaces = this.transform(this.value);
+      this.onChange(valueWithSpaces);
     }
   }
 
@@ -136,7 +138,18 @@ export class RangeInputComponent
     return (moreThanMinOn / rangeBetweenMaxAndMin) * 100;
   }
 
+   transform(valueBeforeTransform: string) {
+    if (!valueBeforeTransform.toString()) {
+      return "";
+    }
+  
+    const valueWithoutSpaces = valueBeforeTransform.replace(" ", "")
+
+    return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
+  }
+
   setControlValue(value: number) {
+    debugger;
     this.control.setValue(value);
   }
 }
