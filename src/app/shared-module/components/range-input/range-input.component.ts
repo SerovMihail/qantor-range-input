@@ -75,8 +75,7 @@ export class RangeInputComponent
   ngOnInit() {
     this.getFormGroupAndFormControl();
     this.observeFormGroupValueChanges();
-  this.observeInputEventTriggerToFormatValue();
-    
+    this.observeInputEventTriggerToFormatValue();
   }
 
   ngOnDestroy() {
@@ -119,7 +118,7 @@ export class RangeInputComponent
       .subscribe(() => {
         console.log(this.control.value);
         this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
-          this.control.value.toString().replace(/\s/g, "")
+          this.clearOfSpacesControlValue
         );
       });
   }
@@ -167,5 +166,9 @@ export class RangeInputComponent
   setControlValue(value: number) {
     this.control.setValue(value);
     this.inputUpdating$.next(value);
+  }
+
+  get clearOfSpacesControlValue() {
+    return this.control.value.toString().replace(/\s/g, "");
   }
 }
