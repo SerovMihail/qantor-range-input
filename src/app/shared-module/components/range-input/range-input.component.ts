@@ -116,7 +116,6 @@ export class RangeInputComponent
     this.formGroup.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        console.log(this.control.value);
         this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
           this.clearOfSpacesControlValue
         );

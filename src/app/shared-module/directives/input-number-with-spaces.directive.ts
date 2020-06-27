@@ -5,18 +5,17 @@ import { Directive, HostListener, ElementRef } from "@angular/core";
 })
 export class InputNumberWithSpaces {
   
-  @HostListener("input", ["$event.target"])
-  onInput(elementTarget: HTMLInputElement) {
-    debugger;
-    this.elementReference.nativeElement.value = this.transform(elementTarget);
+  @HostListener("input", ["$event.target.value"])
+  onInput(value: string) {
+    this.elementReference.nativeElement.value = this.transform(value)
   }
 
   constructor(private elementReference: ElementRef) {}
 
-  transform(elementTarget: HTMLInputElement) {
+  transform(value: string) {
 
-    const valueWithoutSpaces = elementTarget.value.replace(/\s/g, "");
+    const valueWithoutSpaces = value.replace(/\s/g, "");
 
-    return valueWithoutSpaces.replace(/[^\dA-Z]/g, '').replace(/(.{3})/g, '$1 ').trim();;
+    return Number(valueWithoutSpaces).toLocaleString("fi-FI");
   }
 }
