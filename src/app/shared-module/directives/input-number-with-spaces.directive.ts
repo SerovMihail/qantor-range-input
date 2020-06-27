@@ -1,48 +1,19 @@
-import { Directive, OnInit, OnDestroy } from "@angular/core";
-import { NgControl } from "@angular/forms";
-import { Subscription, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Directive, HostListener, ElementRef } from "@angular/core";
 
 @Directive({
   selector: "[formControl][appNumberWithSpaces]"
 })
-export class InputNumberWithSpaces implements OnInit, OnDestroy {
-
-  @HostListener("input", ["$event.target.value"])
-  onInput(value) {
-    console.log(value)
-
+export class InputNumberWithSpaces {
+  @HostListener("keyup", ["$event.target.value"])
+  onInput(value: string) {
+    this.elementReference.nativeElement.value = this.transform(value);
   }
-  private readonly ngUnsubscribe$ = new Subject<void>();
 
-  constructor(public ngControl: NgControl) {}
-
-  ngOnInit(): void {
-    debugger;
-    this.ngControl.control.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(value => {
-        const newVal = this.transform(value);
-        debugger;
-        this.ngControl.control.setValue(newVal, {
-          emitEvent: false,
-          onlySelf: true
-        });
-      });
-  }
+  constructor(private elementReference: ElementRef) {}
 
   transform(valueBeforeTransform: string) {
-    if (!valueBeforeTransform.toString()) {
-      return "";
-    }
-  
-    const valueWithoutSpaces = valueBeforeTransform.replace(" ", "")
+    const valueWithoutSpaces = valueBeforeTransform.replace(/\s/g, "");
 
-    return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    return Number(valueWithoutSpaces).toLocaleString("ru");
   }
 }
