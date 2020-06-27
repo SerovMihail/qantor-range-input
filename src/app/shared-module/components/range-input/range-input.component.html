@@ -2,7 +2,7 @@
 	<button type="button" class="fast-select-button min-button" (click)="setControlValue(min)">MIN {{min | shortNumber}}</button>
 
 	<div class="center-section">
-		<input  [formControl]="control" type="number" min="{{min}}" max="{{max}}" class="range-input">
+		<input  [formControl]="control" type="text" class="range-input">
 		<div class="ticks-wrapper">
 			<ul class="ticks-list">
 				<li class="tick-wrapper" *ngFor="let tick of ticks;"

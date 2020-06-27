@@ -6,7 +6,6 @@ import {
   ElementRef,
   ChangeDetectionStrategy
 } from "@angular/core";
-import { ISliderDragFinish } from "../../models/emitters/ISliderDragFinish";
 
 @Component({
   selector: "app-horizontal-slider",
@@ -27,7 +26,7 @@ export class HorizontalSliderComponent {
   public min!: number;
   public trackRef!: ElementRef;
   public leftOffset!: number;
-  public valueChangeEvents = new EventEmitter<ISliderDragFinish>();
+  public valueChangeEvents = new EventEmitter<number>();
 
   constructor() {}
 
@@ -52,18 +51,10 @@ export class HorizontalSliderComponent {
       );
       nextValue = Math.max(nextValue, this.min);
       nextValue = Math.min(nextValue, this.max);
-
-      const rangeBetweenMaxAndMin = this.max - this.min;
-      const valueOnOnePercent = rangeBetweenMaxAndMin / 100;
-      const moreThanMinOn = nextValue - this.min;
-
-      const roundedLeftOffsetInPercentage = Math.round((moreThanMinOn / rangeBetweenMaxAndMin) * 100);
+      
       const roundedControlValue = Math.round(nextValue);
 
-      this.valueChangeEvents.emit({
-        leftOffset: roundedLeftOffsetInPercentage,
-        value: roundedControlValue
-      });
+      this.valueChangeEvents.emit(roundedControlValue);
     };
 
     var handleMouseup = () => {

@@ -157,9 +157,12 @@ export class RangeInputComponent
     return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
   }
 
-  onSliderDragEmit(finishDrag: ISliderDragFinish) {
-    this.setControlValue(finishDrag.value);
-    this.handlerLeftOffset = finishDrag.leftOffset;
+  onSliderDragEmit(value: number) {
+    console.log(value);
+    this.setControlValue(value);
+    this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
+      value
+    );
   }
 
   setControlValue(value: number) {

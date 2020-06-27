@@ -3,6 +3,7 @@
   line-height: 19px;
   margin: 48px 24px;
   display: block;
+  width: 100%;
 
   .input-wrapper {
     display: flex;
@@ -19,6 +20,13 @@
       border-radius: 0px 3px 3px 0px;
       color: #5AA6FF;
       white-space: nowrap;
+      transition: all .5s;
+      cursor: pointer;
+
+      &:hover {
+        color: #F4F5F6;
+        background: #5AA6FF;
+      }
     }
 
     .min-button {
