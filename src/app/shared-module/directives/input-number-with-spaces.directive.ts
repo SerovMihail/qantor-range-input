@@ -1,9 +1,9 @@
 import { Directive, HostListener, ElementRef } from "@angular/core";
 
 @Directive({
-  selector: "[formControl][appNumberWithSpaces]"
+  selector: "[onlyNumbers]"
 })
-export class InputNumberWithSpaces {
+export class OnlyNumbers {
   
   @HostListener("input", ["$event.target.value"])
   onInput(value: string) {
@@ -14,8 +14,9 @@ export class InputNumberWithSpaces {
 
   transform(value: string) {
 
-    const valueWithoutSpaces = value.replace(/\s/g, "");
+    const valueWithoutSpaces = value.replace(/[^\dA-Z]/g, '');
 
     return Number(valueWithoutSpaces).toLocaleString("fi-FI");
+
   }
 }

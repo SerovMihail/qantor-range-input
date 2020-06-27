@@ -21,7 +21,6 @@ import {
 } from "@angular/forms";
 import { takeUntil, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Subject, BehaviorSubject } from "rxjs";
-import { ISliderDragFinish } from "../../models/emitters/ISliderDragFinish";
 
 @Component({
   selector: "app-range-input",
@@ -54,11 +53,8 @@ export class RangeInputComponent
   }
   private _value: any;
 
-  @ViewChild("rangeInput")
-  private myScrollContainer: ElementRef;
-
   private readonly ngUnsubscribe$ = new Subject<void>();
-  inputUpdating$ = new Subject<number>();
+  private readonly inputUpdating$ = new Subject<number>();
 
   formGroup: FormGroup;
   control: FormControl;
@@ -75,7 +71,6 @@ export class RangeInputComponent
   ngOnInit() {
     this.getFormGroupAndFormControl();
     this.observeFormGroupValueChanges();
-    this.observeInputEventTriggerToFormatValue();
   }
 
   ngOnDestroy() {
@@ -98,18 +93,6 @@ export class RangeInputComponent
     } else {
       console.warn("Can't find parent FormGroup directive");
     }
-  }
-
-  private observeInputEventTriggerToFormatValue() {
-    this.inputUpdating$
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe$)
-      )
-      .subscribe(() => {
-        this.myScrollContainer.nativeElement.dispatchEvent(new Event("input"));
-      });
   }
 
   private observeFormGroupValueChanges() {
@@ -163,8 +146,14 @@ export class RangeInputComponent
   }
 
   setControlValue(value: number) {
-    this.control.setValue(value);
-    this.inputUpdating$.next(value);
+    this.control.setValue(this.transform(value), { emitEvent: false });
+  }
+
+  transform(value: number) {
+
+    const valueWithoutSpaces = value.toString().replace(/\s/g, "");
+
+    return Number(valueWithoutSpaces).toLocaleString("fi-FI");
   }
 
   get clearOfSpacesControlValue() {
