@@ -7,6 +7,12 @@ import { takeUntil } from "rxjs/operators";
   selector: "[formControl][appNumberWithSpaces]"
 })
 export class InputNumberWithSpaces implements OnInit, OnDestroy {
+
+  @HostListener("input", ["$event.target.value"])
+  onInput(value) {
+    console.log(value)
+
+  }
   private readonly ngUnsubscribe$ = new Subject<void>();
 
   constructor(public ngControl: NgControl) {}
