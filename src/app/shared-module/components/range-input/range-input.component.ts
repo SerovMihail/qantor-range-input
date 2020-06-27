@@ -57,8 +57,6 @@ export class RangeInputComponent
   formGroup: FormGroup;
   control: FormControl;
 
-  disabled: boolean;
-
   handlerLeftOffset: number;
 
   onChange = (_: any) => {};
@@ -106,7 +104,6 @@ export class RangeInputComponent
   }
 
   onChangeEvent($event: Event) {
-    debugger;
     this.writeValue(($event.target as HTMLInputElement).value);
   }
 
@@ -125,10 +122,6 @@ export class RangeInputComponent
     this.onTouch = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
   getPercentageOffsetFromLeftByValue(tick: number) {
     if (tick <= this.min) {
       return 0;
@@ -145,7 +138,14 @@ export class RangeInputComponent
     return (moreThanMinOn / rangeBetweenMaxAndMin) * 100;
   }
 
-  transform(valueBeforeTransform: string) {
+  onSliderDragEmit(value: number) {
+    this.setControlValue(value);
+    this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
+      value
+    );
+  }
+
+  private transform(valueBeforeTransform: string) {
     if (!valueBeforeTransform.toString()) {
       return "";
     }
@@ -157,13 +157,7 @@ export class RangeInputComponent
     return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
   }
 
-  onSliderDragEmit(value: number) {
-    console.log(value);
-    this.setControlValue(value);
-    this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
-      value
-    );
-  }
+  
 
   setControlValue(value: number) {
     this.control.setValue(value);
