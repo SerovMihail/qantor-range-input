@@ -4,23 +4,19 @@ import { Directive, HostListener, ElementRef } from "@angular/core";
   selector: "[formControl][appNumberWithSpaces]"
 })
 export class InputNumberWithSpaces {
-  @HostListener("keyup", ["$event.target"])
+  
+  @HostListener("input", ["$event.target"])
   onInput(elementTarget: HTMLInputElement) {
-    let cursorPosition = elementTarget.selectionStart;
+    debugger;
     this.elementReference.nativeElement.value = this.transform(elementTarget);
-    elementTarget.selectionEnd = ++cursorPosition; 
-
   }
 
   constructor(private elementReference: ElementRef) {}
 
   transform(elementTarget: HTMLInputElement) {
 
-    
-
     const valueWithoutSpaces = elementTarget.value.replace(/\s/g, "");
 
-
-    return Number(valueWithoutSpaces).toLocaleString("ru");
+    return valueWithoutSpaces.replace(/[^\dA-Z]/g, '').replace(/(.{3})/g, '$1 ').trim();;
   }
 }

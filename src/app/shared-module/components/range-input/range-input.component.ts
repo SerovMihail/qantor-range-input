@@ -7,7 +7,9 @@ import {
   Optional,
   Host,
   SkipSelf,
-  OnDestroy
+  OnDestroy,
+  ElementRef,
+  ViewChild
 } from "@angular/core";
 import {
   ControlContainer,
@@ -17,8 +19,8 @@ import {
   FormGroup,
   FormControl
 } from "@angular/forms";
-import { takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
+import { takeUntil, debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { Subject, BehaviorSubject } from "rxjs";
 import { ISliderDragFinish } from "../../models/emitters/ISliderDragFinish";
 
 @Component({
@@ -52,7 +54,11 @@ export class RangeInputComponent
   }
   private _value: any;
 
+  @ViewChild("rangeInput")
+  private myScrollContainer: ElementRef;
+
   private readonly ngUnsubscribe$ = new Subject<void>();
+  inputUpdating$ = new Subject<number>();
 
   formGroup: FormGroup;
   control: FormControl;
@@ -69,6 +75,8 @@ export class RangeInputComponent
   ngOnInit() {
     this.getFormGroupAndFormControl();
     this.observeFormGroupValueChanges();
+  this.observeInputEventTriggerToFormatValue();
+    
   }
 
   ngOnDestroy() {
@@ -93,12 +101,25 @@ export class RangeInputComponent
     }
   }
 
+  private observeInputEventTriggerToFormatValue() {
+    this.inputUpdating$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe$)
+      )
+      .subscribe(() => {
+        this.myScrollContainer.nativeElement.dispatchEvent(new Event("input"));
+      });
+  }
+
   private observeFormGroupValueChanges() {
     this.formGroup.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
+        console.log(this.control.value);
         this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
-          this.control.value
+          this.control.value.toString().replace(/\s/g, "")
         );
       });
   }
@@ -140,26 +161,11 @@ export class RangeInputComponent
 
   onSliderDragEmit(value: number) {
     this.setControlValue(value);
-    this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(
-      value
-    );
+    this.handlerLeftOffset = this.getPercentageOffsetFromLeftByValue(value);
   }
-
-  private transform(valueBeforeTransform: string) {
-    if (!valueBeforeTransform.toString()) {
-      return "";
-    }
-
-    const valueAsStringValue = valueBeforeTransform.toString();
-
-    const valueWithoutSpaces = valueAsStringValue.replace(" ", "");
-
-    return valueWithoutSpaces.replace(/(?!^)(?=(?:\d{3})+$)/g, " ");
-  }
-
-  
 
   setControlValue(value: number) {
     this.control.setValue(value);
+    this.inputUpdating$.next(value);
   }
 }
