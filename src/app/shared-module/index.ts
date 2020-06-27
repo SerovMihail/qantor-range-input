@@ -5,7 +5,7 @@ import { OnlyNumbers } from "./directives/input-number-with-spaces.directive";
 
 
 export const SHARED_MODULE_DECLARATIONS = [
-  // componentsOnlyNumbers
+  // components
   RangeInputComponent, 
   HorizontalSliderComponent,
   // directives

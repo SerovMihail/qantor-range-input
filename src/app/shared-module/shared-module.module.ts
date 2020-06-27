@@ -5,7 +5,7 @@ import { SHARED_MODULE_DECLARATIONS } from ".";
 
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  declarations: [...SHARED_MODULE_DECLARATIONS, ],
+  declarations: [...SHARED_MODULE_DECLARATIONS],
   exports: [...SHARED_MODULE_DECLARATIONS]
 })
 export class SharedModuleModule {}
