@@ -1,7 +1,7 @@
 import { RangeInputComponent } from "./components/range-input/range-input.component";
 import { HorizontalSliderComponent } from "./components/horizontal-slider/horizontal-slider.component";
 import { ShortNumberPipe } from "./pipes/short-number.pipe";
-import { OnlyNumbers } from "./directives/input-number-with-spaces.directive";
+import { OnlyNumbers } from "./directives/only-numbers.directive";
 
 
 export const SHARED_MODULE_DECLARATIONS = [

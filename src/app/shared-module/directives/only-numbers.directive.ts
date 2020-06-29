@@ -14,9 +14,7 @@ export class OnlyNumbers {
 
   transform(value: string) {
 
-    const valueWithoutSpaces = value.replace(/[^\dA-Z]/g, '');
-
-    return Number(valueWithoutSpaces).toLocaleString("fi-FI");
+    return value.replace(/[^\dA-Z]/g, '');
 
   }
 }
