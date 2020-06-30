@@ -7,7 +7,7 @@ export class OnlyNumbers {
   
   @HostListener("input", ["$event.target.value"])
   onInput(value: string) {
-    this.elementReference.nativeElement.value = this.transform(value)
+    this.elementReference.nativeElement.value = this.transform(value);
   }
 
   constructor(private elementReference: ElementRef) {}
